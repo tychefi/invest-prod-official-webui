@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Models | Structured Participation Platform</title>
+
+<!-- ============================================================
+  EDITING GUIDE
+  ============================================================
+  1. MODEL DATA: Search "MODEL DATA CONFIG" below to edit all 3 models
+  2. GLOBAL STYLES: Search "THEME VARIABLES" for colors/fonts
+  3. FAQ: Search "FAQ DATA" 
+  4. RISK/DISCLOSURE: Search "RISK DATA"
+  5. Add a 4th model: Add entry to MODELS array + MODEL_PAGES object
+  
+  All content placeholders are marked with [EDIT] comments.
+============================================================ -->
+
+<style>
+/* ============================================================
+   THEME VARIABLES — Edit colors, fonts, spacing here
+   ============================================================ */
+:root {
+  /* Primary palette */
+  --color-navy-950: #0a1628;
+  --color-navy-900: #0f1f3a;
+  --color-navy-800: #15294a;
+  --color-navy-700: #1a3561;
+  --color-navy-600: #1f4278;
+
+  /* Accent */
+  --color-gold-500: #c9a84c;
+  --color-gold-400: #d4b85e;
+  --color-gold-300: #dfc870;
+  --color-gold-100: #f7f0d9;
+  --color-gold-50: #fdfaf3;
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-gray-50: #f8f9fb;
+  --color-gray-100: #f1f3f7;
+  --color-gray-200: #e2e6ed;
+  --color-gray-300: #c8cdd6;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Semantic */
+  --color-success: #0d9488;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-info: #2563eb;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  /* Layout */
+  --max-width: 1200px;
+  --nav-height: 72px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(10, 22, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.08);
+  --shadow-lg: 0 8px 30px rgba(10, 22, 40, 0.12);
+  --shadow-xl: 0 20px 60px rgba(10, 22, 40, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-gray-700);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-navy-950);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -0.01em; }
+h3 { font-size: clamp(1.15rem, 2vw, 1.5rem); }
+h4 { font-size: 1.125rem; }
+
+.section-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-500);
+  margin-bottom: var(--space-sm);
+}
+
+.section-title {
+  margin-bottom: var(--space-md);
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-gray-500);
+  max-width: 640px;
+  margin-bottom: var(--space-2xl);
+}
+
+p { margin-bottom: var(--space-md); }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-gray-200);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+
+.nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-navy-950);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.nav-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--color-navy-800), var(--color-navy-950));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold-500);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--color-gray-600);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.nav-links a:hover { color: var(--color-navy-800); }
+
+.nav-cta {
+  background: var(--color-navy-900);
+  color: var(--color-white) !important;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600 !important;
+  transition: background var(--transition-fast) !important;
+}
+
+.nav-cta:hover {
+  background: var(--color-navy-700) !important;
+  color: var(--color-white) !important;
+}
+
+/* Mobile nav hamburger */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-sm);
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-gray-700);
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  padding: var(--space-4xl) 0 var(--space-3xl);
+  background: linear-gradient(180deg, var(--color-gray-50) 0%, var(--color-white) 100%);
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: var(--color-gold-50);
+  color: var(--color-gold-500);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.2rem;
+  border-radius: 100px;
+  border: 1px solid var(--color-gold-100);
+  margin-bottom: var(--space-xl);
+}
+
+.hero h1 {
+  max-width: 800px;
+  margin: 0 auto var(--space-lg);
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-gray-500);
+  max-width: 640px;
+  margin: 0 auto var(--space-2xl);
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.85rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+}
+
+.btn-primary {
+  background: var(--color-navy-900);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background: var(--color-navy-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--color-white);
+  color: var(--color-navy-900);
+  border: 1.5px solid var(--color-gray-300);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-navy-600);
+  background: var(--color-gray-50);
+}
+
+.btn-gold {
+  background: var(--color-gold-500);
+  color: var(--color-white);
+}
+
+.btn-gold:hover {
+  background: var(--color-gold-400);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section {
+  padding: var(--space-4xl) 0;
+}
+
+.section-alt {
+  background: var(--color-gray-50);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.section-header .section-label { margin-bottom: var(--space-sm); }
+
+/* ============================================================
+   COMPARISON CARDS (Homepage)
+   ============================================================ */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
+}
+
+.model-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.model-card:hover {
+  border-color: var(--color-navy-600);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.model-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-gray-200);
+}
+
+.model-card.model-1::before { background: var(--color-navy-700); }
+.model-card.model-2::before { background: var(--color-gold-500); }
+.model-card.model-3::before { background: var(--color-success); }
+
+.model-card-number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-gray-400);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.model-card h3 {
+  margin-bottom: var(--space-sm);
+  font-size: 1.35rem;
+}
+
+.model-card-summary {
+  color: var(--color-gray-500);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+  flex-grow: 1;
+}
+
+.model-card-features {
+  list-style: none;
+  margin-bottom: var(--space-xl);
+  border-top: 1px solid var(--color-gray-100);
+  padding-top: var(--space-lg);
+}
+
+.model-card-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}
+
+.model-card-features li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold-500);
+  margin-top: 0.55rem;
+}
+
+.model-card .btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: auto;
+}
+
+/* ============================================================
+   COMPARISON TABLE
+   ============================================================ */
+.comparison-table-wrap {
+  overflow-x: auto;
+  margin-bottom: var(--space-3xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-white);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.comparison-table thead th {
+  background: var(--color-gray-50);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gray-500);
+  position: sticky;
+  top: 0;
+}
+
+.comparison-table thead th:first-child {
+  border-radius: var(--radius-lg) 0 0 0;
+}
+
+.comparison-table thead th:last-child {
+  border-radius: 0 var(--radius-lg) 0 0;
+}
+
+.comparison-table .field-label {
+  font-weight: 600;
+  color: var(--color-gray-700);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.comparison-table td {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  vertical-align: top;
+}
+
+.comparison-table .cta-cell {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+
+.comparison-table .btn-sm {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+}
+
+/* ============================================================
+   MODEL DETAIL PAGES
+   ============================================================ */
+.detail-page {
+  display: none;
+  padding-top: var(--space-2xl);
+  animation: fadeIn 0.3s ease;
+}
+
+.detail-page.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-hero {
+  padding: var(--space-3xl) 0;
+  background: linear-gradient(180deg, var(--color-gray-50) 0%, var(--color-white) 100%);
+  margin-bottom: var(--space-2xl);
+}
+
+.detail-hero-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-gray-500);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--space-xl);
+  transition: color var(--transition-fast);
+}
+
+.detail-back:hover { color: var(--color-navy-800); }
+
+.detail-hero h1 {
+  max-width: 700px;
+  margin-bottom: var(--space-md);
+}
+
+.detail-hero .hero-subtitle {
+  margin: 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-3xl);
+}
+
+.detail-fact-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+}
+
+.detail-fact-card .fact-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gray-400);
+  margin-bottom: var(--space-sm);
+}
+
+.detail-fact-card .fact-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-navy-950);
+  line-height: 1.5;
+}
+
+.detail-content-block {
+  margin-bottom: var(--space-3xl);
+}
+
+.detail-content-block h3 {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-gray-200);
+}
+
+.detail-content-block p,
+.detail-content-block li {
+  color: var(--color-gray-600);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.detail-content-block ul {
+  padding-left: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+.detail-content-block li {
+  margin-bottom: var(--space-sm);
+}
+
+/* Steps */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.steps li:last-child { border-bottom: none; }
+
+.steps li::before {
+  content: counter(step);
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--color-navy-900);
+  color: var(--color-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+}
+
+.steps h4 { margin-bottom: var(--space-xs); }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg) var(--space-xl);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.faq-question:hover { background: var(--color-gray-50); }
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--color-gray-400);
+  transition: transform var(--transition-fast);
+}
+
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow);
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+}
+
+.faq-answer-inner {
+  padding: 0 var(--space-xl) var(--space-xl);
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   RISK / DISCLOSURE
+   ============================================================ */
+.disclosure-box {
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl) var(--space-2xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.disclosure-box h4 {
+  color: var(--color-warning);
+  margin-bottom: var(--space-md);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.disclosure-box p,
+.disclosure-box li {
+  font-size: 0.85rem;
+  color: var(--color-gray-600);
+  line-height: 1.7;
+}
+
+.disclosure-box ul {
+  padding-left: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.cta-banner {
+  background: linear-gradient(135deg, var(--color-navy-900), var(--color-navy-800));
+  padding: var(--space-3xl) 0;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.cta-banner h2 {
+  color: var(--color-white);
+  margin-bottom: var(--space-md);
+}
+
+.cta-banner p {
+  color: var(--color-gray-300);
+  max-width: 560px;
+  margin: 0 auto var(--space-xl);
+}
+
+.cta-banner .btn {
+  background: var(--color-gold-500);
+  color: var(--color-white);
+}
+
+.cta-banner .btn:hover {
+  background: var(--color-gold-400);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background: var(--color-navy-950);
+  color: var(--color-gray-400);
+  padding: var(--space-4xl) 0 var(--space-2xl);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+}
+
+.footer-brand-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--space-md);
+}
+
+.footer-brand-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+.footer h4 {
+  color: var(--color-white);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-lg);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-links a {
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover { color: var(--color-white); }
+
+.footer-bottom {
+  border-top: 1px solid var(--color-navy-700);
+  padding-top: var(--space-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  font-size: 0.8rem;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: var(--space-lg);
+  list-style: none;
+}
+
+.footer-bottom-links a {
+  color: var(--color-gray-400);
+  text-decoration: none;
+}
+
+.footer-bottom-links a:hover { color: var(--color-white); }
+
+/* ============================================================
+   DIFFERENTIATORS
+   ============================================================ */
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-xl);
+}
+
+.diff-card {
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.diff-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--color-gold-50);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-lg);
+  font-size: 1.5rem;
+  color: var(--color-gold-500);
+}
+
+.diff-card h4 {
+  margin-bottom: var(--space-sm);
+}
+
+.diff-card p {
+  font-size: 0.9rem;
+  color: var(--color-gray-500);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   TRUST SIGNALS
+   ============================================================ */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-xl);
+  text-align: center;
+}
+
+.trust-stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  font-family: var(--font-mono);
+  line-height: 1.2;
+}
+
+.trust-label {
+  font-size: 0.85rem;
+  color: var(--color-gray-500);
+  margin-top: var(--space-sm);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--color-white);
+    flex-direction: column;
+    padding: var(--space-xl);
+    border-bottom: 1px solid var(--color-gray-200);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .nav-links.open { display: flex; }
+
+  .nav-toggle { display: flex; }
+
+  .hero { padding: var(--space-2xl) 0; }
+
+  .section { padding: var(--space-2xl) 0; }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-bottom-links {
+    justify-content: center;
+  }
+
+  .comparison-table-wrap {
+    margin-left: calc(-1 * var(--space-xl));
+    margin-right: calc(-1 * var(--space-xl));
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <a href="#" class="nav-brand" onclick="showHomepage()">
+      <div class="nav-brand-icon">IM</div>
+      Investment Models
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="showHomepage()">Home</a></li>
+      <li><a href="#models-section">Models</a></li>
+      <li><a href="#faq-section">FAQ</a></li>
+      <li><a href="#disclosure-section">Disclosures</a></li>
+      <li><a href="#cta-section" class="nav-cta">Apply Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HOMEPAGE CONTENT
+     ============================================================ -->
+<div id="homepage">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Structured Investment Participation</div>
+      <h1>Explore structured participation models designed for informed investors</h1>
+      <p class="hero-subtitle">
+        <!-- [EDIT] Hero description -->
+        We present three distinct investment participation frameworks. Each model is designed to accommodate different risk preferences, capital structures, and return expectations. Review the options below to identify the approach that aligns with your objectives.
+      </p>
+      <div class="hero-actions">
+        <a href="#comparison-section" class="btn btn-primary">Compare Models</a>
+        <a href="#cta-section" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Cards -->
+  <section class="section" id="models-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Participation Models</span>
+        <h2 class="section-title">Three Structured Approaches</h2>
+        <p class="section-subtitle">
+          Each model is structured to accommodate different investment preferences, risk profiles, and participation styles.
+        </p>
+      </div>
+
+      <div class="comparison-grid" id="modelCards">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Comparison Table -->
+  <section class="section section-alt" id="comparison-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Side-by-Side Comparison</span>
+        <h2 class="section-title">Compare Key Attributes</h2>
+        <p class="section-subtitle">
+          A detailed comparison across consistent evaluation criteria to help you make an informed decision.
+        </p>
+      </div>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table" id="comparisonTable">
+          <!-- Populated by JS -->
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Differentiators -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Why Structured Participation</span>
+        <h2 class="section-title">Key Differentiators</h2>
+      </div>
+      <div class="diff-grid">
+        <!-- [EDIT] Differentiator cards -->
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M12 12v4"/><path d="M9 14l3-2 3 2"/></svg>
+          </div>
+          <h4>Transparent Structure</h4>
+          <p>Each model is clearly defined with explicit terms, participation mechanisms, and return structures outlined in advance.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h4>Multiple Participation Options</h4>
+          <p>Three distinct models allow investors to choose a structure that aligns with their risk tolerance and return objectives.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4>Structured Risk Management</h4>
+          <p>Each model includes clearly defined parameters for capital deployment, risk allocation, and downside scenarios.</p>
+        </div>
+        <div class="diff-card">
+          <div class="diff-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h4>Clear Entry &amp; Exit</h4>
+          <p>Well-defined application processes, participation terms, and exit mechanisms for each investment model.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Signals -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Platform Principles</span>
+        <h2 class="section-title">Why Participate Through Us</h2>
+      </div>
+      <div class="trust-grid">
+        <!-- [EDIT] Trust signal stats — update numbers as needed -->
+        <div>
+          <div class="trust-stat">3</div>
+          <div class="trust-label">Structured Investment Models</div>
+        </div>
+        <div>
+          <div class="trust-stat">100%</div>
+          <div class="trust-label">Transparent Terms</div>
+        </div>
+        <div>
+          <div class="trust-stat">24/7</div>
+          <div class="trust-label">Documentation Access</div>
+        </div>
+        <div>
+          <div class="trust-stat">D.D.</div>
+          <div class="trust-label">Due Diligence Framework</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Preview -->
+  <section class="section" id="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Frequently Asked Questions</span>
+        <h2 class="section-title">Common Questions</h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Risk / Disclosure -->
+  <section class="section section-alt" id="disclosure-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Important Information</span>
+        <h2 class="section-title">Risk Considerations &amp; Disclosures</h2>
+      </div>
+      <div class="disclosure-box" id="disclosureContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner" id="cta-section">
+    <div class="container">
+      <h2>Ready to Explore Further?</h2>
+      <p>
+        <!-- [EDIT] CTA text -->
+        Review the detailed model pages or begin the application process. Our team is available to answer questions and provide additional documentation.
+      </p>
+      <div class="hero-actions">
+        <a href="#models-section" class="btn btn-gold">Compare Models</a>
+        <a href="#" class="btn btn-primary" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /#homepage -->
+
+<!-- ============================================================
+     MODEL DETAIL PAGES (3 pages)
+     ============================================================ -->
+<div id="detailPages">
+  <!-- Each detail page populated by JS -->
+</div>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Investment Models</div>
+        <p class="footer-brand-desc">
+          <!-- [EDIT] Footer description -->
+          A structured investment participation platform presenting clearly defined models for informed investors. All terms subject to final agreement, due diligence, and applicable regulations.
+        </p>
+      </div>
+      <div>
+        <h4>Models</h4>
+        <ul class="footer-links" id="footerModelLinks">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <!-- [EDIT] Footer resource links -->
+        <ul class="footer-links">
+          <li><a href="#faq-section">FAQ</a></li>
+          <li><a href="#disclosure-section">Disclosures</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <!-- [EDIT] Footer contact -->
+        <ul class="footer-links">
+          <li><a href="#">Contact Form</a></li>
+          <li><a href="#">Schedule a Call</a></li>
+          <li><a href="#">Email Inquiry</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Investment Models Platform. All rights reserved.</span>
+      <ul class="footer-bottom-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+/* ============================================================
+   MODEL DATA CONFIG — EDIT ALL 3 MODELS HERE
+   To add a 4th model, append another entry to this array
+   and add a matching entry to MODEL_PAGES below.
+   ============================================================ */
+const MODELS = [
+  {
+    id: 'model-1',
+    number: '01',
+    /* [EDIT] Model 1 name */
+    name: 'Fixed Return Model',
+    /* [EDIT] Model 1 one-line summary */
+    summary: 'A fixed-return structure designed for investors seeking defined participation terms.',
+    /* [EDIT] Model 1 Participation style */
+    participationStyle: 'Fixed-return participation under structured agreement',
+    /* [EDIT] Model 1 Return structure */
+    returnStructure: 'Indicative target return structure subject to agreement terms',
+    /* [EDIT] Model 1 Capital arrangement */
+    capitalArrangement: 'Investor capital deployed under defined terms; subject to contract',
+    /* [EDIT] Model 1 Risk / downside note */
+    riskNote: 'Returns are indicative and subject to performance, agreement terms, and market conditions',
+    /* [EDIT] Model 1 Suitable investor type */
+    suitableFor: 'Investors seeking defined participation terms with structured return parameters',
+    /* [EDIT] Model 1 accent color class */
+    colorClass: 'model-1',
+    accentColor: '#1a3561'
+  },
+  {
+    id: 'model-2',
+    number: '02',
+    /* [EDIT] Model 2 name */
+    name: 'Equal Capital Partnership Model',
+    /* [EDIT] Model 2 one-line summary */
+    summary: 'A partnership-style co-investment structure where both sides contribute capital and share outcomes.',
+    /* [EDIT] Model 2 Participation style */
+    participationStyle: 'Equal capital contribution under partnership arrangement',
+    /* [EDIT] Model 2 Return structure */
+    returnStructure: 'Proportional profit sharing based on agreed partnership terms',
+    /* [EDIT] Model 2 Capital arrangement */
+    capitalArrangement: 'Both parties introduce equal capital under a defined partnership agreement',
+    /* [EDIT] Model 2 Risk / downside note */
+    riskNote: 'Partners share in both profits and losses according to the partnership agreement',
+    /* [EDIT] Model 2 Suitable investor type */
+    suitableFor: 'Investors seeking active partnership participation with proportional risk and reward sharing',
+    colorClass: 'model-2',
+    accentColor: '#c9a84c'
+  },
+  {
+    id: 'model-3',
+    number: '03',
+    /* [EDIT] Model 3 name */
+    name: 'APY Cost Plus Profit Share Model',
+    /* [EDIT] Model 3 one-line summary */
+    summary: 'A capital-cost-based structure with an additional profit-sharing component for aligned incentives.',
+    /* [EDIT] Model 3 Participation style */
+    participationStyle: 'Capital cost structure with supplementary profit participation',
+    /* [EDIT] Model 3 Return structure */
+    returnStructure: 'Base cost-of-capital return plus 30% share in profits (indicative)',
+    /* [EDIT] Model 3 Capital arrangement */
+    capitalArrangement: 'Investor capital deployed under structured terms with profit participation rights',
+    /* [EDIT] Model 3 Risk / downside note */
+    riskNote: 'Loss allocation and downside protection mechanisms subject to final agreement and legal structure',
+    /* [EDIT] Model 3 Suitable investor type */
+    suitableFor: 'Investors seeking base return structure with additional upside participation potential',
+    colorClass: 'model-3',
+    accentColor: '#0d9488'
+  }
+];
+
+/* ============================================================
+   MODEL DETAIL PAGES CONTENT
+   Each model gets its own detail page. Edit long-form content here.
+   ============================================================ */
+const MODEL_PAGES = {
+  'model-1': {
+    /* [EDIT] Model 1 — Hero */
+    heroSummary: 'A structured participation model offering defined return parameters under a fixed-return framework, subject to agreement terms and applicable regulations.',
+    /* [EDIT] Model 1 — Key facts */
+    facts: [
+      { label: 'Model Type', value: 'Fixed Return Structure' },
+      { label: 'Participation Style', value: 'Defined-return participation' },
+      { label: 'Return Mechanism', value: 'Indicative target return — subject to agreement' },
+      { label: 'Capital Deployment', value: 'Per agreed terms and schedule' },
+      { label: 'Target Investor', value: 'Return-focused, defined-term preference' },
+      { label: 'Documentation', value: 'Full agreement package provided' }
+    ],
+    /* [EDIT] Model 1 — How it works */
+    howItWorks: [
+      { title: 'Initial Consultation', desc: 'Review model structure, indicative terms, and suitability with our team.' },
+      { title: 'Agreement Review', desc: 'Review and negotiate the participation agreement including return parameters and term structure.' },
+      { title: 'Capital Deployment', desc: 'Capital is deployed according to the agreed schedule and structure.' },
+      { title: 'Return Distribution', desc: 'Returns are distributed per the agreed schedule, subject to the terms of the agreement.' }
+    ],
+    /* [EDIT] Model 1 — Capital structure description */
+    capitalStructureDesc: 'Under the Fixed Return Model, the investor provides capital under a defined agreement. The capital is deployed according to a pre-agreed structure, and returns are distributed based on the terms specified in the participation agreement. All capital deployment and return parameters are documented and subject to mutual agreement.',
+    /* [EDIT] Model 1 — Profit-sharing description */
+    profitSharingDesc: 'This model operates on a fixed-return basis. The indicative return parameters are established in the participation agreement. Actual returns are subject to the terms of the agreement, underlying performance, and market conditions. All return figures are indicative and should not be construed as guaranteed.',
+    /* [EDIT] Model 1 — Risk notes */
+    riskNotes: [
+      'Returns under this model are indicative and subject to the terms of the final agreement.',
+      'Market conditions and underlying performance may affect actual outcomes.',
+      'Historical or indicative figures should not be interpreted as future performance guarantees.',
+      'Investors should conduct their own due diligence and consult professional advisors.',
+      'All terms, including return parameters, are subject to negotiation and final documentation.'
+    ],
+    /* [EDIT] Model 1 — Investor suitability */
+    investorSuitability: [
+      'Investors seeking a defined-return participation structure',
+      'Those who prefer clear, pre-defined terms of participation',
+      'Investors comfortable with fixed-return frameworks subject to agreement',
+      'Individuals and entities who have reviewed and understood the agreement terms'
+    ],
+    /* [EDIT] Model 1 — FAQ */
+    faq: [
+      { q: 'What is the indicative return range?', a: 'Return parameters are discussed during the consultation process and formalized in the participation agreement. Please contact our team for indicative ranges subject to current market conditions.' },
+      { q: 'How is capital protected?', a: 'Capital deployment terms, including any protective mechanisms, are defined in the participation agreement. We encourage investors to review these provisions carefully with their advisors.' },
+      { q: 'What is the minimum participation amount?', a: 'Minimum participation thresholds are discussed during initial consultation and vary based on the structure of the agreement. Please contact our team for current parameters.' },
+      { q: 'What is the typical agreement term?', a: 'Agreement terms are structured on a case-by-case basis. Typical structures and indicative terms will be discussed during the consultation process.' }
+    ]
+  },
+  'model-2': {
+    heroSummary: 'A partnership-based co-investment model where both parties contribute equal capital and share in the outcomes proportionally under a defined partnership agreement.',
+    facts: [
+      { label: 'Model Type', value: 'Equal Capital Partnership' },
+      { label: 'Participation Style', value: 'Co-investment with shared participation' },
+      { label: 'Return Mechanism', value: 'Proportional profit sharing per agreement' },
+      { label: 'Capital Deployment', value: 'Equal contribution from both parties' },
+      { label: 'Target Investor', value: 'Partnership-oriented, active participation' },
+      { label: 'Documentation', value: 'Partnership agreement package' }
+    ],
+    howItWorks: [
+      { title: 'Partnership Discussion', desc: 'Discuss partnership structure, capital contributions, and profit-sharing terms with our team.' },
+      { title: 'Agreement Formation', desc: 'Formalize the partnership agreement including capital contribution terms, profit-sharing ratios, and operational parameters.' },
+      { title: 'Capital Contribution', desc: 'Both parties contribute equal capital as defined in the partnership agreement.' },
+      { title: 'Ongoing Participation', desc: 'Both parties participate in the venture according to the partnership terms, with proportional profit distribution.' }
+    ],
+    capitalStructureDesc: 'Under the Equal Capital Partnership Model, both the investor and the platform contribute equal capital to a jointly managed structure. The partnership agreement defines the capital contribution amounts, deployment strategy, and distribution mechanism. All terms are negotiated and documented prior to capital deployment.',
+    profitSharingDesc: 'Profits are shared proportionally between the partners based on the terms defined in the partnership agreement. The default structure assumes equal sharing, though specific ratios may be adjusted by mutual agreement. All profit distribution is subject to actual performance and the terms of the partnership documentation.',
+    riskNotes: [
+      'Partners share in both profits and losses according to the partnership agreement.',
+      'The partnership structure involves shared risk — both parties participate in outcomes.',
+      'Actual returns depend on underlying performance and cannot be guaranteed.',
+      'Partnership terms should be reviewed with independent legal and financial advisors.',
+      'Exit mechanisms and dissolution terms are defined in the partnership agreement.'
+    ],
+    investorSuitability: [
+      'Investors seeking active partnership participation',
+      'Those comfortable with proportional risk and reward sharing',
+      'Investors who prefer a collaborative co-investment structure',
+      'Individuals and entities willing to participate under a defined partnership agreement'
+    ],
+    faq: [
+      { q: 'How is the partnership legally structured?', a: 'The partnership is formalized through a comprehensive partnership agreement. The specific legal structure depends on jurisdiction and participant requirements. We recommend consulting with legal counsel during the formation process.' },
+      { q: 'What happens if one partner wants to exit?', a: 'Exit mechanisms are defined in the partnership agreement, including notice periods, valuation methodologies, and transfer provisions. These terms are negotiated and agreed upon before capital deployment.' },
+      { q: 'How are decisions made in the partnership?', a: 'Decision-making frameworks are established in the partnership agreement, covering operational, strategic, and financial matters. Governance structures are designed for clarity and mutual alignment.' },
+      { q: 'Is the equal contribution requirement flexible?', a: 'The default structure assumes equal capital contribution. Variations may be discussed during the agreement formation process, subject to mutual agreement and documentation.' }
+    ]
+  },
+  'model-3': {
+    heroSummary: 'A hybrid structure combining a base cost-of-capital return with supplementary profit-sharing participation, designed to align incentives while providing base-level return structure.',
+    facts: [
+      { label: 'Model Type', value: 'Cost Plus Profit Share' },
+      { label: 'Participation Style', value: 'Base return + profit participation' },
+      { label: 'Return Mechanism', value: 'Base cost return + indicative 30% profit share' },
+      { label: 'Capital Deployment', value: 'Per structured agreement terms' },
+      { label: 'Target Investor', value: 'Base-return with upside participation' },
+      { label: 'Documentation', value: 'Structured participation agreement' }
+    ],
+    howItWorks: [
+      { title: 'Structure Review', desc: 'Review the cost-plus model structure, base return parameters, and profit-sharing mechanics with our team.' },
+      { title: 'Agreement Documentation', desc: 'Document all terms including base cost-of-capital return, profit-sharing ratio, and downside parameters.' },
+      { title: 'Capital Deployment', desc: 'Capital is deployed according to the structured agreement, with defined monitoring and reporting.' },
+      { title: 'Return &amp; Profit Distribution', desc: 'Base returns and profit shares are distributed according to the agreed schedule and performance outcomes.' }
+    ],
+    capitalStructureDesc: 'This model features a two-tier structure: a base cost-of-capital return component and a supplementary profit-sharing component. The investor provides capital under a structured agreement that defines both the base return parameters and the profit participation terms. The structure is designed for transparency and aligned incentives.',
+    profitSharingDesc: 'The return mechanism consists of two components: (1) a base return tied to the cost of capital, providing a foundational return structure; and (2) an indicative 30% share in profits, providing participation in upside outcomes. Both components are subject to the terms of the agreement and actual performance. Loss allocation and downside protection mechanisms are subject to final agreement and legal structure.',
+    riskNotes: [
+      'The base return component is subject to agreement terms, underlying performance, and market conditions.',
+      'Profit-sharing percentages are indicative and subject to final agreement documentation.',
+      'Loss allocation and downside protection mechanisms are subject to final agreement and legal structure.',
+      'All return figures, including the base return, are indicative and not guaranteed.',
+      'Investors should conduct independent due diligence and consult professional advisors.'
+    ],
+    investorSuitability: [
+      'Investors seeking a base return structure with additional upside potential',
+      'Those who value a combination of defined parameters and profit participation',
+      'Investors comfortable with a hybrid structure that balances base return and variable components',
+      'Individuals and entities who have reviewed the full agreement terms and structure'
+    ],
+    faq: [
+      { q: 'How is the base cost-of-capital return determined?', a: 'The base return parameters are determined based on prevailing market conditions, cost of capital benchmarks, and mutual agreement between the parties. Specific parameters are discussed during the consultation process.' },
+      { q: 'What does the 30% profit share apply to?', a: 'The indicative 30% profit share applies to profits generated under the agreement, as defined in the participation documentation. The specific profit calculation methodology is detailed in the agreement.' },
+      { q: 'What happens in a loss scenario?', a: 'Loss allocation and downside protection mechanisms are defined in the final agreement. The structure of downside participation is subject to negotiation, legal review, and final documentation.' },
+      { q: 'Can the profit-sharing ratio be adjusted?', a: 'The profit-sharing ratio is negotiated as part of the agreement formation process. The indicative 30% figure is subject to discussion and may be adjusted by mutual agreement.'
+      }
+    ]
+  }
+};
+
+/* ============================================================
+   GLOBAL FAQ DATA — Edit FAQs here
+   ============================================================ */
+const GLOBAL_FAQ = [
+  /* [EDIT] FAQ items — add, remove, or modify */
+  {
+    q: 'What types of investment models are available?',
+    a: 'We offer three distinct participation models: a Fixed Return Model, an Equal Capital Partnership Model, and an APY Cost Plus Profit Share Model. Each is designed for different investor preferences and risk profiles. Detailed documentation for each model is available upon request.'
+  },
+  {
+    q: 'Are returns guaranteed?',
+    a: 'No. All returns are indicative and subject to the terms of the final agreement, underlying performance, and market conditions. No return figures should be interpreted as guaranteed. Prospective investors should review all documentation carefully and seek independent advice.'
+  },
+  {
+    q: 'How do I begin the application process?',
+    a: 'The process begins with an initial consultation where we discuss your objectives, review the model structures, and assess suitability. Following this, documentation is provided, and the agreement formation process begins. You can start by contacting our team or submitting an inquiry through the Apply Now option.'
+  },
+  {
+    q: 'What documentation will I receive?',
+    a: 'Each model comes with a comprehensive documentation package including the participation or partnership agreement, term sheet, risk disclosure document, and operational parameters. All terms are documented in writing before capital deployment.'
+  },
+  {
+    q: 'What are the minimum investment requirements?',
+    a: 'Minimum participation thresholds vary by model and are discussed during the initial consultation. Contact our team for current parameters applicable to each model structure.'
+  },
+  {
+    q: 'How are profits distributed?',
+    a: 'Distribution mechanisms vary by model. The Fixed Return Model follows a defined distribution schedule. The Partnership Model distributes profits proportionally. The Cost Plus Model combines base returns with profit-sharing distributions. All distribution terms are specified in the respective agreements.'
+  },
+  {
+    q: 'What happens if I want to withdraw early?',
+    a: 'Early withdrawal or exit provisions are defined in each model&apos;s agreement documentation. Terms may include notice periods, applicable adjustments, and settlement mechanisms. These provisions are discussed and documented before participation begins.'
+  }
+];
+
+/* ============================================================
+   RISK / DISCLOSURE DATA
+   ============================================================ */
+const RISK_DATA = {
+  title: 'Risk Considerations &amp; Disclosures',
+  /* [EDIT] Disclosure paragraphs */
+  paragraphs: [
+    'The information presented on this website is for informational and educational purposes only. It does not constitute an offer, solicitation, or recommendation to enter into any investment, partnership, or financial arrangement.',
+    'All returns, structures, profit-sharing ratios, capital arrangements, and other terms described herein are indicative and subject to the terms of final agreements, due diligence, and applicable laws and regulations.',
+    'Participation in any of the models described involves risk, including the potential loss of capital. Past or indicative performance figures should not be interpreted as guarantees of future results.',
+    'Prospective participants should carefully review all documentation, conduct independent due diligence, and consult with qualified legal, financial, and tax advisors before entering into any agreement.'
+  ],
+  /* [EDIT] Disclosure bullet points */
+  bullets: [
+    'All terms are subject to final agreement between the parties.',
+    'Returns are indicative only where applicable and are not guaranteed.',
+    'Participation structure depends on legal and contractual arrangement.',
+    'Prospective investors should review all documentation and seek independent professional advice.',
+    'This website does not constitute a public offering or solicitation under any jurisdiction.',
+    'Capital is at risk. The value of investments can go down as well as up.',
+    'Tax treatment depends on individual circumstances and may change in the future.',
+    'Past or indicative performance is not a reliable indicator of future results.'
+  ]
+};
+
+/* ============================================================
+   RENDER FUNCTIONS
+   ============================================================ */
+
+/** Render model cards on homepage */
+function renderModelCards() {
+  const container = document.getElementById('modelCards');
+  container.innerHTML = MODELS.map(m => `
+    <div class="model-card ${m.colorClass}">
+      <div class="model-card-number">Model ${m.number}</div>
+      <h3>${m.name}</h3>
+      <p class="model-card-summary">${m.summary}</p>
+      <ul class="model-card-features">
+        <li>${m.participationStyle}</li>
+        <li>${m.returnStructure}</li>
+        <li>${m.capitalArrangement}</li>
+      </ul>
+      <a href="#" class="btn btn-secondary" onclick="showModelDetail('${m.id}'); return false;">
+        View Details
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  `).join('');
+}
+
+/** Render comparison table */
+function renderComparisonTable() {
+  const table = document.getElementById('comparisonTable');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        ${MODELS.map(m => `<th>${m.name}</th>`).join('')}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="field-label">Model Name</td>
+        ${MODELS.map(m => `<td><strong>${m.name}</strong></td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">One-Line Summary</td>
+        ${MODELS.map(m => `<td>${m.summary}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">Participation Style</td>
+        ${MODELS.map(m => `<td>${m.participationStyle}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">Return Structure</td>
+        ${MODELS.map(m => `<td>${m.returnStructure}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">Capital Arrangement</td>
+        ${MODELS.map(m => `<td>${m.capitalArrangement}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">Risk / Downside Note</td>
+        ${MODELS.map(m => `<td>${m.riskNote}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label">Suitable Investor Type</td>
+        ${MODELS.map(m => `<td>${m.suitableFor}</td>`).join('')}
+      </tr>
+      <tr>
+        <td class="field-label"></td>
+        ${MODELS.map(m => `
+          <td class="cta-cell">
+            <a href="#" class="btn btn-secondary btn-sm" onclick="showModelDetail('${m.id}'); return false;">View Details →</a>
+          </td>
+        `).join('')}
+      </tr>
+    </tbody>
+  `;
+}
+
+/** Render all detail pages */
+function renderDetailPages() {
+  const container = document.getElementById('detailPages');
+  container.innerHTML = MODELS.map(m => {
+    const page = MODEL_PAGES[m.id];
+    return `
+      <div class="detail-page" id="detail-${m.id}">
+        <section class="detail-hero">
+          <div class="detail-hero-inner">
+            <a href="#" class="detail-back" onclick="showHomepage(); return false;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Back to All Models
+            </a>
+            <div class="hero-badge">Model ${m.number}</div>
+            <h1>${m.name}</h1>
+            <p class="hero-subtitle">${page.heroSummary}</p>
+          </div>
+        </section>
+
+        <div class="container">
+          <!-- Key Facts -->
+          <div class="detail-grid">
+            ${page.facts.map(f => `
+              <div class="detail-fact-card">
+                <div class="fact-label">${f.label}</div>
+                <div class="fact-value">${f.value}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- How It Works -->
+          <div class="detail-content-block">
+            <h3>How the Model Works</h3>
+            <ol class="steps">
+              ${page.howItWorks.map(s => `
+                <li>
+                  <div>
+                    <h4>${s.title}</h4>
+                    <p>${s.desc}</p>
+                  </div>
+                </li>
+              `).join('')}
+            </ol>
+          </div>
+
+          <!-- Capital Structure -->
+          <div class="detail-content-block">
+            <h3>Capital Structure</h3>
+            <p>${page.capitalStructureDesc}</p>
+          </div>
+
+          <!-- Profit-Sharing -->
+          <div class="detail-content-block">
+            <h3>Profit-Sharing / Return Mechanism</h3>
+            <p>${page.profitSharingDesc}</p>
+          </div>
+
+          <!-- Risk Notes -->
+          <div class="detail-content-block">
+            <h3>Risk &amp; Disclosure Notes</h3>
+            <ul>
+              ${page.riskNotes.map(r => `<li>${r}</li>`).join('')}
+            </ul>
+          </div>
+
+          <!-- Investor Suitability -->
+          <div class="detail-content-block">
+            <h3>Investor Suitability</h3>
+            <p>This model may be suitable for:</p>
+            <ul>
+              ${page.investorSuitability.map(s => `<li>${s}</li>`).join('')}
+            </ul>
+          </div>
+
+          <!-- Model-specific FAQ -->
+          <div class="detail-content-block">
+            <h3>Frequently Asked Questions</h3>
+            <div class="faq-list">
+              ${page.faq.map((f, i) => `
+                <div class="faq-item" onclick="toggleFaqItem(this)">
+                  <button class="faq-question">
+                    <span>${f.q}</span>
+                    <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                  </button>
+                  <div class="faq-answer">
+                    <div class="faq-answer-inner">${f.a}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Detail CTA -->
+          <div style="text-align:center;padding:var(--space-2xl) 0 var(--space-4xl);">
+            <a href="#cta-section" class="btn btn-primary" onclick="showHomepage(); return false;">
+              Apply for ${m.name}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/** Render FAQ section on homepage */
+function renderFaq() {
+  const container = document.getElementById('faqList');
+  container.innerHTML = GLOBAL_FAQ.map(f => `
+    <div class="faq-item" onclick="toggleFaqItem(this)">
+      <button class="faq-question">
+        <span>${f.q}</span>
+        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">${f.a}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/** Render risk/disclosure section */
+function renderDisclosure() {
+  const container = document.getElementById('disclosureContent');
+  container.innerHTML = `
+    <h4>⚠ ${RISK_DATA.title}</h4>
+    ${RISK_DATA.paragraphs.map(p => `<p>${p}</p>`).join('')}
+    <ul>
+      ${RISK_DATA.bullets.map(b => `<li>${b}</li>`).join('')}
+    </ul>
+  `;
+}
+
+/** Render footer model links */
+function renderFooterModelLinks() {
+  const container = document.getElementById('footerModelLinks');
+  container.innerHTML = MODELS.map(m => `
+    <li><a href="#" onclick="showModelDetail('${m.id}'); return false;">${m.name}</a></li>
+  `).join('');
+}
+
+/* ============================================================
+   INTERACTIVITY
+   ============================================================ */
+
+/** Toggle FAQ item open/close */
+function toggleFaqItem(item) {
+  item.classList.toggle('open');
+}
+
+/** Toggle mobile navigation */
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+/** Show homepage, hide all detail pages */
+function showHomepage() {
+  document.getElementById('homepage').style.display = 'block';
+  document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/** Show a specific model detail page */
+function showModelDetail(modelId) {
+  document.getElementById('homepage').style.display = 'none';
+  document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('detail-' + modelId);
+  if (page) {
+    page.classList.add('active');
+  }
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   INITIALIZATION
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderModelCards();
+  renderComparisonTable();
+  renderDetailPages();
+  renderFaq();
+  renderDisclosure();
+  renderFooterModelLinks();
+});
+</script>
+
+</body>
+</html>
