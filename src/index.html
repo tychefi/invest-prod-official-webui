@@ -1248,7 +1248,7 @@ p { margin-bottom: var(--space-md); }
           <ul>
             <li><strong>Fixed Return</strong> — predictable yield, defined upfront</li>
             <li><strong>Equal Partnership</strong> — co-invest, share profits proportionally</li>
-            <li><strong>Base + Profit Share</strong> — guaranteed floor with 30% upside participation</li>
+            <li><strong>Base + Profit Share</strong> — structured base return with 30% upside participation</li>
           </ul>
         </div>
       </div>
@@ -1496,12 +1496,12 @@ const MODELS = [
     id: 'model-1',
     number: '01',
     name: 'Fixed Return',
-    summary: '10%+ fixed yield, distributed on schedule — simple and predictable.',
+    summary: '10%+ fixed yield, distributed on schedule — structured and transparent.',
     participationStyle: 'Fixed-return structure with competitive yield targets',
     returnStructure: 'Fixed yield of 10% or above — defined upfront, distributed on schedule',
     capitalArrangement: 'Clear deployment terms with set agreement duration',
-    riskLevel: 'Low',
-    riskExplanation: 'Fixed returns, unaffected by market swings.',
+    riskLevel: 'Moderate',
+    riskExplanation: 'Structured returns with defined parameters — subject to agreement terms.',
     riskNote: 'Returns are indicative, not guaranteed. Subject to agreement terms and market conditions.',
     suitableFor: 'Conservative investors seeking predictable, hands-off returns',
     colorClass: 'model-1',
@@ -1513,7 +1513,7 @@ const MODELS = [
     name: 'APY + Profit Share',
     summary: 'APY base return plus 30% profit share — downside protection, upside participation.',
     participationStyle: 'APY cost-of-capital return + 30% profit participation',
-    returnStructure: 'Guaranteed APY base return + 30% profit share on top',
+    returnStructure: 'Defined APY base return + 30% profit share on top',
     capitalArrangement: 'Structured with defined downside protection parameters',
     riskLevel: 'Medium',
     riskExplanation: 'Base return cushions the downside; profit share captures the upside.',
@@ -1528,7 +1528,7 @@ const MODELS = [
     name: 'Equal Partnership',
     summary: 'Equal capital, proportional profits — full alignment, no cap.',
     participationStyle: 'Equal capital co-investment — full parity',
-    returnStructure: 'Full profit share — no cap on upside',
+    returnStructure: 'Proportional profit share — full alignment',
     capitalArrangement: 'Joint deployment with equivalent commitment from each party',
     riskLevel: 'High',
     riskExplanation: 'Returns tied to performance. Shared upside, shared risk.',
@@ -1624,7 +1624,7 @@ const MODEL_PAGES = {
     ]
   },
   'model-3': {
-    heroSummary: 'A hybrid structure: guaranteed base return plus 30% profit participation. Downside protection with meaningful upside — designed for investors who want a floor plus growth exposure.',
+    heroSummary: 'A hybrid structure: defined base return plus 30% profit participation. Downside protection with meaningful upside — designed for investors who want a floor plus growth exposure.',
     facts: [
       { label: 'Product Type', value: 'Base + Profit Share' },
       { label: 'Return Style', value: 'Two-tier: base return + 30% profit share' },
@@ -1668,7 +1668,7 @@ const MODEL_PAGES = {
 const GLOBAL_FAQ = [
   {
     q: 'What products are available?',
-    a: 'Three products: Fixed Return (predictable yield), Equal Partnership (co-invest and share profits), and Base + Profit Share (guaranteed floor + 30% upside). All backed by the same commodity arbitrage strategy.'
+    a: 'Three products: Fixed Return (structured yield), Equal Partnership (co-invest and share profits), and Base + Profit Share (defined base return + 30% upside). All backed by the same commodity arbitrage strategy.'
   },
   {
     q: 'Are returns guaranteed?',
@@ -1726,7 +1726,7 @@ function wrapAPY(s) {
 function renderModelCards() {
   const container = document.getElementById('modelCards');
   const riskBadge = (level) => {
-    const map = { Low: 'var(--positive)', Medium: 'var(--gold)', High: 'var(--error)' };
+    const map = { Low: 'var(--positive)', Moderate: 'var(--gold)', Medium: 'var(--gold)', High: 'var(--error)' };
     return `<span class="risk-badge" style="background:${map[level]}">${level}</span>`;
   };
   const roman = ['I', 'II', 'III', 'IV', 'V'];
