@@ -1726,7 +1726,7 @@ function wrapAPY(s) {
 function renderModelCards() {
   const container = document.getElementById('modelCards');
   const riskBadge = (level) => {
-    const map = { Low: 'var(--positive)', Moderate: 'var(--gold)', Medium: 'var(--gold)', High: 'var(--error)' };
+    const map = { Low: 'var(--positive)', Moderate: 'var(--positive)', Medium: 'var(--gold)', High: 'var(--error)' };
     return `<span class="risk-badge" style="background:${map[level]}">${level}</span>`;
   };
   const roman = ['I', 'II', 'III', 'IV', 'V'];
